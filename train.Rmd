@@ -1,0 +1,25 @@
+---
+title: "trains.Rmd"
+author: "Hamaad Mehal"
+date: "3/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(gov.1005.data)
+library(tidyverse)
+library(infer)
+```
+
+```{r}
+avg_it <- train %>%
+  filter(treatment == "Treated") %>%
+  rep_sample_n(size = 51, replace = TRUE, reps = 3) %>%
+  group_by(replicate) %>%
+  summarise(avg_income = mean(income)) %>%
+  pull(avg_income) %>%
+  quantile(c(0.025, 0.975))
+
+avg_it
+```
